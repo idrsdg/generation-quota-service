@@ -46,8 +46,4 @@ Time spent: TODO(idris) hours.
 - No idempotency key.
 - `limit` above 100 is clamped.
 
-## AI usage
-
-TODO(idris)
-
-Scaling question: [NOTES.md](NOTES.md).
+Scaling question and AI usage: [NOTES.md](NOTES.md).

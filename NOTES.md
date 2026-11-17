@@ -14,3 +14,7 @@
 - **Also for 10 instances:** 10 pools of 10 connections reach PostgreSQL's default limit of
   100, so I would shrink the pools or add PgBouncer, and run migrations as a deploy step
   instead of on every start.
+
+# AI usage
+
+TODO(idris)
