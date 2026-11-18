@@ -9,6 +9,7 @@ export function encodeCursor(cursor: Cursor): string {
 }
 
 const MAX_CURSOR_TIME = Date.UTC(9999, 11, 31);
+const MAX_BIGINT = 9223372036854775807n;
 
 export function decodeCursor(raw: string): Cursor | null {
   try {
@@ -19,7 +20,7 @@ export function decodeCursor(raw: string): Cursor | null {
     // JavaScript accepts date strings PostgreSQL rejects (e.g. "1"), so pass on a canonical ISO value.
     const time = Date.parse(createdAt);
     if (Number.isNaN(time) || time < 0 || time > MAX_CURSOR_TIME) return null;
-    if (typeof id !== 'string' || !/^\d{1,19}$/.test(id)) return null;
+    if (typeof id !== 'string' || !/^\d{1,19}$/.test(id) || BigInt(id) > MAX_BIGINT) return null;
     return { createdAt: new Date(time).toISOString(), id };
   } catch {
     return null;

@@ -65,7 +65,8 @@ export function buildApp({ db, redis, provider, config, logger = true }: AppDepe
     }
     const prompt = rawPrompt.trim();
     const length = charLength(prompt);
-    if (length === 0 || length > config.maxPromptLength) {
+    // PostgreSQL text cannot store NUL, so it is rejected here, before quota and provider.
+    if (length === 0 || length > config.maxPromptLength || prompt.includes('\u0000')) {
       return reply.code(400).send({ error: 'invalid_prompt' });
     }
 
@@ -131,7 +132,8 @@ export function buildApp({ db, redis, provider, config, logger = true }: AppDepe
     }
 
     let cursor: Cursor | null = null;
-    if (query.cursor !== undefined) {
+    // An empty cursor (`?cursor=`) means the first page.
+    if (query.cursor !== undefined && query.cursor !== '') {
       cursor = typeof query.cursor === 'string' ? decodeCursor(query.cursor) : null;
       if (cursor === null) {
         return reply.code(400).send({ error: 'invalid_cursor' });

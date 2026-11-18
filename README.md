@@ -14,9 +14,9 @@ Migrations (`migrations/`) run on start.
 
 ## Quota under concurrency
 
-One PostgreSQL row per user per UTC day. One atomic upsert
-(`INSERT … ON CONFLICT DO UPDATE … WHERE used < 5`) reserves a unit before the provider call;
-concurrent requests queue on the row lock, so at most five pass. Errors and timeouts refund it.
+One PostgreSQL row per user per UTC day: one atomic upsert
+(`INSERT … ON CONFLICT DO UPDATE … WHERE used < 5`) reserves a unit before the provider call,
+so concurrent requests queue on the row lock and at most five pass. Errors and timeouts refund it.
 
 ## Index and EXPLAIN
 

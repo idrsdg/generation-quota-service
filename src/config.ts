@@ -20,6 +20,7 @@ export const config: Config = {
   providerTimeoutMs: 3000,
   maxPromptLength: 2000,
   maxUserIdLength: 128,
-  // 2,000 characters are at most 8 KB in UTF-8; 16 KB leaves room for JSON escaping.
-  bodyLimitBytes: 16 * 1024,
+  // 2,000 characters are at most 8 KB in UTF-8, or 24 KB when a client sends them as
+  // \uXXXX escapes (two per emoji); 32 KB covers both.
+  bodyLimitBytes: 32 * 1024,
 };
