@@ -24,11 +24,11 @@ so concurrent requests queue on the row lock and at most five pass. Errors and t
 Page 50,000 rows deep into 100,000:
 
 ```
-Limit (actual time=0.051..0.055 rows=21)
+Limit (actual time=0.020..0.024 rows=21)
   Buffers: shared hit=4
   -> Index Scan using generations_user_history_idx (actual rows=21)
        Index Cond: (user_id = 'seed-user') AND (ROW(created_at, id) < ROW('2026-11-17 06:11:38+00', 50017))
-Execution Time: 0.119 ms
+Execution Time: 0.056 ms
 ```
 
 ## One technical choice

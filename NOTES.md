@@ -9,8 +9,8 @@
 - **Recovery is clean.** Nothing was written during the outage, so no wrong or stale data
   appears; the cache simply refills.
 - **What I would change:** a circuit breaker around Redis, so a slow (not refused) Redis does
-  not add up to 500 ms per command (a miss does one read and one write) to every request; single-flight per normalized prompt to soften the
-  cold-cache stampede after recovery.
+  not add up to 500 ms per command (a miss does one read and one write) to every request;
+  single-flight per normalized prompt to soften the cold-cache stampede after recovery.
 - **Also for 10 instances:** 10 pools of 10 connections reach PostgreSQL's default limit of
   100, so I would shrink the pools or add PgBouncer, and run migrations as a deploy step
   instead of on every start.
