@@ -10,7 +10,7 @@ docker compose run --rm test                       # real PostgreSQL and Redis
 docker compose exec app node dist/scripts/seed.js  # 100,000 rows, user "seed-user"
 ```
 
-Migrations (`migrations/`) run on start.
+Migrations run on start.
 
 ## Quota under concurrency
 
@@ -34,15 +34,15 @@ Execution Time: 0.119 ms
 ## One technical choice
 
 Quota lives in PostgreSQL, not Redis: it survives restarts and Redis outages and is shared
-by all instances, for one small write per uncached request. Redis is only a cache and fails open.
+by all instances, for one write per uncached request. Redis is only a cache and fails open.
 
 ## Time spent and known gaps
 
 Time spent: about 10 hours.
 
-- A crash between reserve and refund costs the user one unit; the limit is never exceeded.
-- Simultaneous identical prompts both reach the provider (no single-flight).
-- No idempotency key.
+- A crash between reserve and refund loses one unit; the limit holds.
+- In-flight requests hold a unit: bursts can get 429 before failures refund.
+- Identical simultaneous prompts both call the provider.
 - `limit` above 100 is clamped.
 
-Scaling question and AI usage: [NOTES.md](NOTES.md).
+Scaling answer, AI usage, full EXPLAIN: [NOTES.md](NOTES.md).
