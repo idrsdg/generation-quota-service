@@ -14,10 +14,9 @@ Migrations (`migrations/`) run on start.
 
 ## Quota under concurrency
 
-One PostgreSQL row per user per UTC day. A single
-`INSERT … ON CONFLICT DO UPDATE SET used = used + 1 WHERE used < 5` reserves a unit before
-the provider call; concurrent requests queue on the row lock and re-check the condition, so
-at most five pass. Provider errors and timeouts refund the unit.
+One PostgreSQL row per user per UTC day. One atomic upsert
+(`INSERT … ON CONFLICT DO UPDATE … WHERE used < 5`) reserves a unit before the provider call;
+concurrent requests queue on the row lock, so at most five pass. Errors and timeouts refund it.
 
 ## Index and EXPLAIN
 
@@ -39,7 +38,7 @@ by all instances, for one small write per uncached request. Redis is only a cach
 
 ## Time spent and known gaps
 
-Time spent: TODO(idris) hours.
+Time spent: about 10 hours.
 
 - A crash between reserve and refund costs the user one unit; the limit is never exceeded.
 - Simultaneous identical prompts both reach the provider (no single-flight).

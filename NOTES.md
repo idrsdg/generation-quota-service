@@ -17,4 +17,7 @@
 
 # AI usage
 
-TODO(idris)
+I used AI for most of the implementation and the first draft of these notes.
+I made the design decisions with it, reviewed every file, and verified the result with
+typecheck, the integration tests against real PostgreSQL and Redis, and the full verification
+flow from the case.
